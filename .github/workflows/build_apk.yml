@@ -1,0 +1,56 @@
+name: Build APK using Flet
+
+on:
+  push:
+    branches:
+      - main  # Aciona o workflow ao fazer push na branch principal
+  pull_request:
+    branches:
+      - main  # Aciona o workflow ao criar uma PR para a branch principal
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Usa Ubuntu para o build, pois o Buildozer não funciona no Windows
+
+    steps:
+    - name: Checkout the repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'  # Defina a versão do Python
+
+    - name: Install Buildozer and dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y build-essential ccache git python3-dev unzip zlib1g-dev
+        sudo apt install -y libncurses5 libffi-dev libssl-dev liblzma-dev
+        pip install --upgrade pip setuptools cython
+        pip install buildozer
+
+    - name: Generate buildozer.spec file for Flet
+      run: |
+        cat > buildozer.spec <<EOL
+        [app]
+        title = My Flet App
+        package.name = myfletapp
+        package.domain = org.example
+        source.include_exts = py,png,jpg,kv,atlas
+        version = 0.1
+        requirements = python3,flet
+        orientation = portrait
+        android.api = 30
+        android.arch = armeabi-v7a
+        EOL
+
+    - name: Build APK
+      run: |
+        buildozer android debug  # Gera o APK
+
+    - name: Upload APK Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: apk
+        path: |
+          bin/*.apk  # Caminho para o APK gerado
