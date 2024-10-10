@@ -36,6 +36,7 @@ jobs:
         title = My Flet App
         package.name = myfletapp
         package.domain = org.example
+        source.dir = app  # Especifica que o script está na pasta 'app'
         source.include_exts = py,png,jpg,kv,atlas
         version = 0.1
         requirements = python3,flet
