@@ -29,6 +29,19 @@ jobs:
         pip install --upgrade pip setuptools cython
         pip install buildozer
 
+    - name: Install Android SDK Command-Line Tools
+      run: |
+        sudo mkdir -p /usr/local/android-sdk
+        wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip
+        sudo unzip commandlinetools-linux-7583922_latest.zip -d /usr/local/android-sdk
+        sudo mv /usr/local/android-sdk/cmdline-tools /usr/local/android-sdk/cmdline-tools/latest
+        sudo chown -R $USER:$USER /usr/local/android-sdk
+
+    - name: Accept Android SDK licenses
+      run: |
+        yes | sdkmanager --licenses
+        sdkmanager --update
+
     - name: Generate buildozer.spec file for Flet
       run: |
         cat > buildozer.spec <<EOL
