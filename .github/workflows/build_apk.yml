@@ -35,8 +35,10 @@ jobs:
         wget https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip -O cmdline-tools.zip
         sudo unzip cmdline-tools.zip -d /usr/local/android-sdk/
         rm cmdline-tools.zip
-        cd /usr/local/android-sdk/
-        ls
+        sudo chown -R $USER:$USER /usr/local/android-sdk/cmdline-tools/bin
 
-
+    - name: Accept Android SDK licenses
+      run: |
+        yes | sdkmanager --licenses
+        sdkmanager --update
 
