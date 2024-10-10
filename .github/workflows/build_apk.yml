@@ -39,7 +39,7 @@ jobs:
 
     - name: Accept Android SDK licenses
       run: |
-        cd /usr/local/android-sdk/cmdline-tools/latest/bin
+        cd /usr/local/android-sdk/cmdline-tools/bin/
         yes | ./sdkmanager --licenses
         ./sdkmanager --update
 
