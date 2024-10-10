@@ -35,46 +35,8 @@ jobs:
         wget https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip -O cmdline-tools.zip
         sudo unzip cmdline-tools.zip -d /usr/local/android-sdk/cmdline-tools
         rm cmdline-tools.zip
+        cd /usr/local/android-sdk/cmdline-tools
+        ls
 
-        # Move the tools to the latest directory
-        if [ -d "/usr/local/android-sdk/cmdline-tools/latest" ]; then
-            echo "O diretório 'latest' já existe. Renomeando para 'latest_old'."
-            sudo mv /usr/local/android-sdk/cmdline-tools/latest /usr/local/android-sdk/cmdline-tools/latest_old
-        fi
 
-        # Create the 'latest' directory and move contents
-        sudo mkdir -p /usr/local/android-sdk/cmdline-tools/latest
-        sudo mv /usr/local/android-sdk/cmdline-tools/* /usr/local/android-sdk/cmdline-tools/latest/
-        sudo chown -R $USER:$USER /usr/local/android-sdk
 
-    - name: Accept Android SDK licenses
-      run: |
-        yes | sdkmanager --licenses
-        sdkmanager --update
-
-    - name: Generate buildozer.spec file for Flet
-      run: |
-        cat > buildozer.spec <<EOL
-        [app]
-        title = My Flet App
-        package.name = myfletapp
-        package.domain = org.example
-        source.dir = app  # Especifica que o script está na pasta 'app'
-        source.include_exts = py,png,jpg,kv,atlas
-        version = 0.1
-        requirements = python3,flet
-        orientation = portrait
-        android.api = 30
-        android.arch = armeabi-v7a
-        EOL
-
-    - name: Build APK
-      run: |
-        buildozer android debug  # Gera o APK
-
-    - name: Upload APK Artifact
-      uses: actions/upload-artifact@v3  # Atualizando para a versão 3
-      with:
-        name: apk
-        path: |
-          bin/*.apk  # Caminho para o APK gerado
