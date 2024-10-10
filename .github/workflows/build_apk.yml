@@ -31,10 +31,20 @@ jobs:
 
     - name: Install Android SDK Command-Line Tools
       run: |
-        sudo mkdir -p /usr/local/android-sdk
-        wget https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip
-        sudo unzip commandlinetools-linux-7583922_latest.zip -d /usr/local/android-sdk
-        sudo mv /usr/local/android-sdk/cmdline-tools /usr/local/android-sdk/cmdline-tools/latest
+        sudo mkdir -p /usr/local/android-sdk/cmdline-tools
+        wget https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip -O cmdline-tools.zip
+        sudo unzip cmdline-tools.zip -d /usr/local/android-sdk/cmdline-tools
+        rm cmdline-tools.zip
+
+        # Move the tools to the latest directory
+        if [ -d "/usr/local/android-sdk/cmdline-tools/latest" ]; then
+            echo "O diretório 'latest' já existe. Renomeando para 'latest_old'."
+            sudo mv /usr/local/android-sdk/cmdline-tools/latest /usr/local/android-sdk/cmdline-tools/latest_old
+        fi
+
+        # Create the 'latest' directory and move contents
+        sudo mkdir -p /usr/local/android-sdk/cmdline-tools/latest
+        sudo mv /usr/local/android-sdk/cmdline-tools/* /usr/local/android-sdk/cmdline-tools/latest/
         sudo chown -R $USER:$USER /usr/local/android-sdk
 
     - name: Accept Android SDK licenses
