@@ -40,7 +40,8 @@ jobs:
         wget https://dl.google.com/android/repository/commandlinetools-linux-6514223_latest.zip -O cmdline-tools.zip
         sudo unzip cmdline-tools.zip -d /usr/local/android-sdk/temp
         rm cmdline-tools.zip
-        sudo mv /usr/local/android-sdk/temp/cmdline-tools/* /usr/local/android-sdk/cmdline-tools/latest
+        #sudo mv /usr/local/android-sdk/temp/cmdline-tools/* /usr/local/android-sdk/cmdline-tools/latest
+        sudo mv /usr/local/android-sdk/temp/tools/* /usr/local/android-sdk/cmdline-tools/latest
 
     - name: Install Android NDK
       run: |
