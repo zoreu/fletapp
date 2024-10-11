@@ -36,7 +36,7 @@ jobs:
         wget https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip -O cmdline-tools.zip
         sudo unzip cmdline-tools.zip -d /usr/local/android-sdk/temp
         rm cmdline-tools.zip
-        mv /usr/local/android-sdk/temp/cmdline-tools/* /usr/local/android-sdk/cmdline-tools/latest
+        sudo mv /usr/local/android-sdk/temp/cmdline-tools/* /usr/local/android-sdk/cmdline-tools/latest
 
     - name: Set Android SDK root environment variable
       run: |
@@ -47,4 +47,3 @@ jobs:
         cd /usr/local/android-sdk/cmdline-tools/latest/bin
         yes | ./sdkmanager --licenses
         ./sdkmanager --update
-
