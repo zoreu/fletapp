@@ -55,5 +55,5 @@ jobs:
     - name: Accept Android SDK licenses and install Build-Tools
       run: |
         cd /usr/local/android-sdk/tools/bin
-        echo "listando sdk:"
+        echo "Listing SDK tools:"
         ls
