@@ -35,13 +35,10 @@ jobs:
 
     - name: Install Android SDK Command-Line Tools
       run: |
-        sudo mkdir -p /usr/local/android-sdk/temp
-        sudo mkdir -p /usr/local/android-sdk/cmdline-tools/latest
+        sudo mkdir -p /usr/local/android-sdk/
         wget https://dl.google.com/android/repository/commandlinetools-linux-6514223_latest.zip -O cmdline-tools.zip
-        sudo unzip cmdline-tools.zip -d /usr/local/android-sdk/temp
+        sudo unzip cmdline-tools.zip -d /usr/local/android-sdk
         rm cmdline-tools.zip
-        #sudo mv /usr/local/android-sdk/temp/cmdline-tools/* /usr/local/android-sdk/cmdline-tools/latest
-        sudo mv /usr/local/android-sdk/temp/tools/* /usr/local/android-sdk/cmdline-tools/latest
 
     - name: Install Android NDK
       run: |
@@ -53,11 +50,11 @@ jobs:
     - name: Set Android SDK and NDK environment variables
       run: |
         echo "ANDROID_SDK_ROOT=/usr/local/android-sdk" >> $GITHUB_ENV
-        echo "PATH=\$PATH:/usr/local/android-sdk/cmdline-tools/latest/bin:/usr/local/android-sdk/platform-tools:/usr/local/android-ndk-r25b" >> $GITHUB_ENV
+        echo "PATH=\$PATH:/usr/local/android-sdk/tools/bin:/usr/local/android-sdk/platform-tools:/usr/local/android-ndk-r25b" >> $GITHUB_ENV
 
     - name: Accept Android SDK licenses and install Build-Tools
       run: |
-        cd /usr/local/android-sdk/cmdline-tools/latest/bin
+        cd /usr/local/android-sdk/tools/bin
         echo "listando tools"
         ls
 
