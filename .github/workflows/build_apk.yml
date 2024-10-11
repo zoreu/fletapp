@@ -31,15 +31,20 @@ jobs:
 
     - name: Install Android SDK Command-Line Tools
       run: |
-        sudo mkdir -p /usr/local/android-sdk/cmdline-tools
+        sudo mkdir -p /usr/local/android-sdk/temp
+        sudo mkdir -p /usr/local/android-sdk/cmdline-tools/latest
         wget https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip -O cmdline-tools.zip
-        sudo unzip cmdline-tools.zip -d /usr/local/android-sdk/
+        sudo unzip cmdline-tools.zip -d /usr/local/android-sdk/temp
         rm cmdline-tools.zip
-        sudo chown -R $USER:$USER /usr/local/android-sdk/cmdline-tools/bin
+        mv /usr/local/android-sdk/temp/cmdline-tools/* /usr/local/android-sdk/cmdline-tools/latest
+
+    - name: Set Android SDK root environment variable
+      run: |
+        echo "ANDROID_SDK_ROOT=/usr/local/android-sdk" >> $GITHUB_ENV
 
     - name: Accept Android SDK licenses
       run: |
-        cd /usr/local/android-sdk/cmdline-tools/bin/
+        cd /usr/local/android-sdk/cmdline-tools/latest/bin
         yes | ./sdkmanager --licenses
         ./sdkmanager --update
 
