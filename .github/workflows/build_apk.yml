@@ -3,14 +3,14 @@ name: Build APK using Flet
 on:
   push:
     branches:
-      - main  # Aciona o workflow ao fazer push na branch principal
+      - main
   pull_request:
     branches:
-      - main  # Aciona o workflow ao criar uma PR para a branch principal
+      - main
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # Usa Ubuntu para o build, pois o Buildozer não funciona no Windows
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout the repository
@@ -19,7 +19,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.9'  # Defina a versão do Python
+        python-version: '3.9'
 
     - name: Install Buildozer and dependencies
       run: |
@@ -42,9 +42,10 @@ jobs:
       run: |
         echo "ANDROID_SDK_ROOT=/usr/local/android-sdk" >> $GITHUB_ENV
 
-    - name: Accept Android SDK licenses
+    - name: Accept Android SDK licenses and install Build-Tools
       run: |
         cd /usr/local/android-sdk/cmdline-tools/latest/bin
+        yes | ./sdkmanager --sdk_root=$ANDROID_SDK_ROOT "build-tools;30.0.3" "platform-tools" "platforms;android-30"
         yes | ./sdkmanager --licenses
         ./sdkmanager --update
 
@@ -55,7 +56,7 @@ jobs:
         title = My Flet App
         package.name = myfletapp
         package.domain = org.example
-        source.dir = app  # Especifica que o script está na pasta 'app'
+        source.dir = app
         source.include_exts = py,png,jpg,kv,atlas
         version = 0.1
         requirements = python3,flet
@@ -66,12 +67,11 @@ jobs:
 
     - name: Build APK
       run: |
-        buildozer android debug  # Gera o APK
+        buildozer android debug
 
     - name: Upload APK Artifact
-      uses: actions/upload-artifact@v3  # Atualizando para a versão 3
+      uses: actions/upload-artifact@v3
       with:
         name: apk
         path: |
-          bin/*.apk  # Caminho para o APK gerado
-    
+          bin/*.apk
