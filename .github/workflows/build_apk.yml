@@ -52,6 +52,6 @@ jobs:
         echo "ANDROID_SDK_ROOT=/usr/local/android-sdk" >> $GITHUB_ENV
         echo "PATH=\$PATH:/usr/local/android-sdk/tools/bin:/usr/local/android-sdk/platform-tools:/usr/local/android-ndk-r25b" >> $GITHUB_ENV
         export PATH="$PATH"
-        cd $ANDROID_SDK_ROOT/tools/bin
+        cd /usr/local/android-sdk/tools/bin
         yes | ./sdkmanager --licenses --no_https
-        ./sdkmanager --sdk_root=$ANDROID_SDK_ROOT "build-tools;30.0.3" "platform-tools" "platforms;android-30" --no_https
+        ./sdkmanager --sdk_root=/usr/local/android-sdk "build-tools;30.0.3" "platform-tools" "platforms;android-30" --no_https
