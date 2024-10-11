@@ -58,32 +58,7 @@ jobs:
     - name: Accept Android SDK licenses and install Build-Tools
       run: |
         cd /usr/local/android-sdk/cmdline-tools/latest/bin
-        yes | ./sdkmanager --licenses --no_https
-        ./sdkmanager --sdk_root=$ANDROID_SDK_ROOT "build-tools;30.0.3" "platform-tools" "platforms;android-30" --no_https
+        echo "listando tools"
+        ls
 
-    - name: Generate buildozer.spec file for Flet
-      run: |
-        cat > buildozer.spec <<EOL
-        [app]
-        title = My Flet App
-        package.name = myfletapp
-        package.domain = org.example
-        source.dir = app
-        source.include_exts = py,png,jpg,kv,atlas
-        version = 0.1
-        requirements = python3,flet
-        orientation = portrait
-        android.api = 30
-        android.arch = armeabi-v7a
-        EOL
 
-    - name: Build APK
-      run: |
-        buildozer android debug
-
-    - name: Upload APK Artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: apk
-        path: |
-          bin/*.apk
