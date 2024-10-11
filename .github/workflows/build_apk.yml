@@ -29,24 +29,35 @@ jobs:
         pip install --upgrade pip setuptools cython
         pip install buildozer
 
+    - name: Install Apache ANT
+      run: |
+        sudo apt install -y ant
+
     - name: Install Android SDK Command-Line Tools
       run: |
         sudo mkdir -p /usr/local/android-sdk/temp
         sudo mkdir -p /usr/local/android-sdk/cmdline-tools/latest
-        wget https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip -O cmdline-tools.zip
+        wget https://dl.google.com/android/repository/commandlinetools-linux-6514223_latest.zip -O cmdline-tools.zip
         sudo unzip cmdline-tools.zip -d /usr/local/android-sdk/temp
         rm cmdline-tools.zip
         sudo mv /usr/local/android-sdk/temp/cmdline-tools/* /usr/local/android-sdk/cmdline-tools/latest
 
-    - name: Set Android SDK root environment variable
+    - name: Install Android NDK
+      run: |
+        wget https://dl.google.com/android/repository/android-ndk-r25b-linux.zip -O android-ndk.zip
+        sudo unzip android-ndk.zip -d /usr/local/
+        rm android-ndk.zip
+        echo "ANDROID_NDK_ROOT=/usr/local/android-ndk-r25b" >> $GITHUB_ENV
+
+    - name: Set Android SDK and NDK environment variables
       run: |
         echo "ANDROID_SDK_ROOT=/usr/local/android-sdk" >> $GITHUB_ENV
+        echo "PATH=\$PATH:/usr/local/android-sdk/cmdline-tools/latest/bin:/usr/local/android-sdk/platform-tools:/usr/local/android-ndk-r25b" >> $GITHUB_ENV
 
     - name: Accept Android SDK licenses and install Build-Tools
       run: |
         cd /usr/local/android-sdk/cmdline-tools/latest/bin
         yes | ./sdkmanager --licenses --no_https
-        ./sdkmanager --update --no_https
         ./sdkmanager --sdk_root=$ANDROID_SDK_ROOT "build-tools;30.0.3" "platform-tools" "platforms;android-30" --no_https
 
     - name: Generate buildozer.spec file for Flet
