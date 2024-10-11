@@ -47,3 +47,31 @@ jobs:
         cd /usr/local/android-sdk/cmdline-tools/latest/bin
         yes | ./sdkmanager --licenses
         ./sdkmanager --update
+
+    - name: Generate buildozer.spec file for Flet
+      run: |
+        cat > buildozer.spec <<EOL
+        [app]
+        title = My Flet App
+        package.name = myfletapp
+        package.domain = org.example
+        source.dir = app  # Especifica que o script está na pasta 'app'
+        source.include_exts = py,png,jpg,kv,atlas
+        version = 0.1
+        requirements = python3,flet
+        orientation = portrait
+        android.api = 30
+        android.arch = armeabi-v7a
+        EOL
+
+    - name: Build APK
+      run: |
+        buildozer android debug  # Gera o APK
+
+    - name: Upload APK Artifact
+      uses: actions/upload-artifact@v3  # Atualizando para a versão 3
+      with:
+        name: apk
+        path: |
+          bin/*.apk  # Caminho para o APK gerado
+    
