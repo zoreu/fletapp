@@ -55,5 +55,6 @@ jobs:
     - name: Accept Android SDK licenses and install Build-Tools
       run: |
         cd /usr/local/android-sdk/tools/bin
-        echo "Listing SDK tools:"
-        ls
+        yes | ./sdkmanager --licenses --no_https
+        ./sdkmanager --sdk_root=$ANDROID_SDK_ROOT "build-tools;30.0.3" "platform-tools" "platforms;android-30" --no_https
+
